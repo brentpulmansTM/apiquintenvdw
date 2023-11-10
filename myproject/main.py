@@ -61,3 +61,4 @@ def startup_event():
         crud.seed_factions(db)
     finally:
         db.close()
+
