@@ -50,9 +50,9 @@ def read_user(name: str, db: Session = Depends(get_db)):
 @app.post("/characters_add/", response_model=schemas.star_wars_create)
 def create_user(user: schemas.star_wars_create, db: Session = Depends(get_db)):
     db_user = crud.get_name(db, name=user.name)
-    if db_user:quintenvdw
+    if db_user:
         raise HTTPException(status_code=400, detail="Name already registered")
-    return crud.create_character(db, user)
+    return crud.create_character(db=db, user=user)
 
 @app.on_event("startup")
 def startup_event():
