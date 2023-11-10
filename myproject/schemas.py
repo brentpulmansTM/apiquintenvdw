@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class star_wars_base(BaseModel):
+class Star_wars_base(BaseModel):
     name: str
     faction_id: int
     lightsaber_Wielder: bool
@@ -10,14 +10,21 @@ class star_wars_base(BaseModel):
     addition: str | None = None
 
 
-class star_wars(star_wars_base):
+class Star_wars(Star_wars_base):
     id: int
 
+    class Config:
+        orm_mode = True
 
-class star_wars_create(star_wars_base):
+
+class Star_wars_create(Star_wars_base):
     pass
 
 
-class faction_base(BaseModel):
+class Faction_search(BaseModel):
     id: int
+    name: str
+
+
+class Faction_create(BaseModel):
     name: str
