@@ -21,10 +21,16 @@ class Star_wars_create(Star_wars_base):
     pass
 
 
-class Faction_search(BaseModel):
+class FactionBase(BaseModel):
+    name: str
+
+
+class FactionCreate(FactionBase):
+    pass
+
+
+class Faction(FactionBase):
     id: int
-    name: str
 
-
-class Faction_create(BaseModel):
-    name: str
+    class Config:
+        orm_mode = True

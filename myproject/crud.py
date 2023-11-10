@@ -4,8 +4,8 @@ import models
 import schemas
 
 
-def get_name(db: Session, name: str):
-    return db.query(models.Star_wars).filter(models.Star_wars.name == name).first()
+def get_name(db: Session, user_name: str):
+    return db.query(models.Star_wars).filter(models.Star_wars.name == user_name).first()
 
 def get_faction_by_name(db: Session, faction_name: str):
     return db.query(models.Faction).filter(models.Faction.name == faction_name).first()
@@ -22,8 +22,8 @@ def create_character(db: Session, user: schemas.Star_wars_create):
     return db_star_Wars
 
 
-def create_faction(db: Session, user: schemas.Faction_create):
-    db_faction = models.Faction(**user.dict())
+def create_faction(db: Session, faction: schemas.FactionCreate):
+    db_faction = models.Faction(**faction.dict())
     db.add(db_faction)
     db.commit()
     db.refresh(db_faction)

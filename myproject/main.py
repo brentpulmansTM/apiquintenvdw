@@ -30,13 +30,13 @@ app = FastAPI()
 
 @app.get("/faction/Jedi", response_model=list[schemas.Star_wars_base])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = crud.get_faction(db, faction="Jedi", skip=skip, limit=limit)
+    users = crud.get_faction(db, faction=1, skip=skip, limit=limit)
     return users
 
 
 @app.get("/faction/Sith", response_model=list[schemas.Star_wars_base])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = crud.get_faction(db, faction="Sith", skip=skip, limit=limit)
+    users = crud.get_faction(db, faction=2, skip=skip, limit=limit)
     return users
 
 
@@ -47,17 +47,19 @@ def read_user(name: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
-@app.post("/characters_add/", response_model=schemas.Star_wars_create)
+
+@app.post("/characters_add/", response_model=schemas.Star_wars)
 def create_user(user: schemas.Star_wars_create, db: Session = Depends(get_db)):
-    db_user = crud.get_name(db, name=user.name)
+    db_user = crud.get_name(db, user_name=user.name)
     if db_user:
         raise HTTPException(status_code=400, detail="Name already registered")
     return crud.create_character(db=db, user=user)
 
-@app.post("/faction_add/", response_model=schemas.Faction_create)
-def create_user(user: schemas.Faction_create, db: Session = Depends(get_db)):
-    db_user = crud.get_name(db, name=user.name)
-    if db_user:
+
+@app.post("/faction_add/", response_model=schemas.Faction)
+def create_faction(user: schemas.FactionCreate, db: Session = Depends(get_db)):
+    faction = crud.get_faction_by_name(db, faction_name=user.name)
+    if faction:
         raise HTTPException(status_code=400, detail="Name already registered")
-    return crud.create_faction(db=db, user=user)
+    return crud.create_faction(db=db, faction=faction)
 
