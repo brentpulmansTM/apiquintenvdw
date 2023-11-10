@@ -4,6 +4,23 @@ import models
 import schemas
 
 
+def seed_factions(db: Session):
+    factions = [
+        {"name": "Jedi"},
+        {"name": "Sith"},
+        # Add more factions as needed
+    ]
+
+    for faction_data in factions:
+        existing_faction = db.query(models.Faction).filter(models.Faction.name == faction_data["name"]).first()
+
+        if not existing_faction:
+            faction = models.Faction(**faction_data)
+            db.add(faction)
+
+    db.commit()
+
+
 def get_name(db: Session, name: str):
     return db.query(models.Star_wars).filter(models.Star_wars.name == name).first()
 

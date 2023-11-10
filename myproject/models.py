@@ -4,7 +4,7 @@ from database import Base
 
 
 class Star_wars(Base):
-    __tablename__ = "users"
+    __tablename__ = "star_wars"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True)

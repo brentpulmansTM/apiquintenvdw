@@ -40,16 +40,24 @@ def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return users
 
 
-@app.get("/name/", response_model=schemas.star_wars)
+@app.get("/character/", response_model=schemas.star_wars)
 def read_user(name: str, db: Session = Depends(get_db)):
     db_user = crud.get_name(db, name=name)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
-@app.post("/users/", response_model=schemas.star_wars_create)
+@app.post("/characters_add/", response_model=schemas.star_wars_create)
 def create_user(user: schemas.star_wars_create, db: Session = Depends(get_db)):
     db_user = crud.get_name(db, name=user.name)
     if db_user:
         raise HTTPException(status_code=400, detail="Name already registered")
     return crud.create_character(db, user)
+
+@app.on_event("startup")
+def startup_event():
+    db = SessionLocal()
+    try:
+        crud.seed_factions(db)
+    finally:
+        db.close()
